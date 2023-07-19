@@ -1,5 +1,4 @@
 from tech_news.database import db
-from operator import itemgetter
 
 
 # Requisito 10
