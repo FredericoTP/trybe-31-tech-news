@@ -1,5 +1,5 @@
 from tech_news.database import db
-
+from datetime import datetime
 
 # Operador $regex:
 # https://www.mongodb.com/docs/v6.0/reference/operator/query/regex/
@@ -21,8 +21,21 @@ def search_by_title(title):
 
 # Requisito 8
 def search_by_date(date):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    try:
+        date_format = datetime.strptime(date, "%Y-%m-%d")
+
+        date_news = db.news.find(
+            {"timestamp": datetime.strftime(date_format, "%d/%m/%Y")},
+            {"title": True, "url": True},
+        )
+
+        news_to_return = []
+        for n in date_news:
+            news_to_return.append((n["title"], n["url"]))
+
+        return news_to_return
+    except ValueError:
+        raise ValueError("Data inválida")
 
 
 # Requisito 9
